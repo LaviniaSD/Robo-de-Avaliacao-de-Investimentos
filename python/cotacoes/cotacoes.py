@@ -4,7 +4,7 @@ def pega_cotacao_moeda(dicionario_moedas):                        # PRÉ REQUISI
     dicionario_cotacoes_moedas = {}                               # Cria o dicionário em que as moedas e suas respectivas cotações serão armazenadas
     for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário((criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
         if moeda == "BRL": # Cria uma verificação se a moeda é o Real, para que não haja problemas ao buscar a cotação na biblioteca yfinance
-            moeda = "BRL"
+            dicionario_cotacoes_moedas["BRL"] = 1
         else:                                                     # Caso não seja a moeda Real o código abaixo será executado
             moeda_comparada_BRL = f"{moeda}BRL=X"                 # Adapta para o padrão que a yfinance reconhece para buscar a cotação da moeda   atrelada ao Real.
             try:                                                  # Verifica se a cotação atrelada ao real será encontrada, e em caso positivo o seguinte código é executado:
