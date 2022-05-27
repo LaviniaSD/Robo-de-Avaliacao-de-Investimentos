@@ -1,8 +1,8 @@
-def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUISITO para usar essa função: existir um dicionário com nome          dicionario_moedas(para passar como parâmetro para a função) com o padrão {--MOEDA-- : --QUANTIDADE--}
+def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUISITO/SUGESTÃO para usar essa função: existir um dicionário com nome dicionario_moedas <----[SUGESTÃO] (para passar como parâmetro para a função) com o padrão {--MOEDA-- : --QUANTIDADE--}  <----[PRÉ REQUISITO]
     import yfinance as yf                                         # Importa o yfinance
             
     dicionario_cotacoes_moedas = {}                               # Cria o dicionário em que as moedas e suas respectivas cotações serão armazenadas
-    for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário((criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
+    for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário(criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
         if moeda == "BRL": # Cria uma verificação se a moeda é o Real, para que não haja problemas ao buscar a cotação na biblioteca yfinance
             dicionario_cotacoes_moedas["BRL"] = 1.00              # Atribui a cotação do Real para o próprio Real que é igual a 1
         else:                                                     # Caso não seja a moeda Real o código abaixo será executado
@@ -18,19 +18,22 @@ def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUIS
 
 
 
-def pega_preco_acoes(dicionario_acoes):
-    import yfinance as yf
-    dicionario_preco_acoes = {}
-    for chave in dicionario_acoes.keys():
-        valor = yf.Ticker(chave).info.get('currentPrice')
-        if valor == None:
-            chave_corrigida = f"{chave}.SA"
+def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO para usar essa função: existir um dicionário com nome dicionario_acoes <----[SUGESTÃO](para passar como parâmetro para a função) com o padrão {--CÓDIGO DA AÇÃO-- : --QUANTIDADE--}   <----[PRÉ REQUISITO]
+    import yfinance as yf                         # Importa o yfinance
+    dicionario_preco_acoes = {}                   # Cria o dicionário em que as ações e seus respectivos preços atuais serão armazenados
+    for chave in dicionario_acoes.keys():         # Cria um loop que percorre as chaves(no caso, as ações) do  dicionário(criado a partir do scrapping do HTML) das ações e da quantidade que o cliente possui delas
+        valor = yf.Ticker(chave).info.get('currentPrice')       # Acessa o valor atual da ação 
+        if valor == None:                         # Cria uma condição que adapta para o padrão de nome das ações no yfinance(Exemplo: nome_da_ação.SA) caso não encontre somente com o código da ação.
+            chave_corrigida = f"{chave}.SA"     
             valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
-            valor = round(valor,2)
-            dicionario_preco_acoes[chave] = valor
+            valor = round(valor,2)                
+            dicionario_preco_acoes[chave] = valor   # Adiciona a ação e seu preço atual ao dicionario_preco_acoes
         else:
             valor = round(valor,2)
-            dicionario_preco_acoes[chave] = valor
+            dicionario_preco_acoes[chave] = valor   # Adiciona a ação e seu preço atual ao dicionario_preco_acoes
 
-    print(dicionario_preco_acoes)
-    return dicionario_preco_acoes
+    print(dicionario_preco_acoes)                   # Imprime o dicionario das ações e seus preços
+    return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços
+
+
+
