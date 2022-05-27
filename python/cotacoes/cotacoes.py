@@ -10,9 +10,18 @@ def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUIS
             try:                                                  # Verifica se a cotação atrelada ao real será encontrada, e em caso positivo o seguinte código é executado:
                 valor = yf.Ticker(moeda_comparada_BRL).history()  # Acessa o histórico da moeda atrelada ao Real
                 cotacao = valor.at[valor.index[-1],"Close"]       # Busca a cotação mais recente da moeda(pelo preço de fechamento em tempo real quando o mercado financeiro esá ativo, ou o último preço fechado quando não está ativo, que é o da cotação atual.)
-                dicionario_cotacoes_moedas[moeda]= round(cotacao,2)        # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
-            except IndexError:                                    # Caso o par de moedas não seja encontrado na biblioteca, imprime que a cotação não foi encontrada.
-                print("Cotação não encontrada")                
+                dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
+            except:
+                #print("Algo de errado ocorreu, tente novamente")        # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
+                try:
+                    valor = yf.Ticker(f"{moeda}BRX=X").history()
+                    cotacao = valor.at[valor.index[-1],"Close"]
+                    dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
+                except IndexError:                                    # Caso o par de moedas não seja encontrado na biblioteca, imprime que a cotação não foi encontrada.
+                    print("Cotação não encontrada")  
+                except:
+                    print("Algo deu errado, tente novamente")  
+                            
     print(dicionario_cotacoes_moedas)                             # Imprime o dicionario das moedas e cotações
     return dicionario_cotacoes_moedas                             # Retorna o dicionario das moedas e cotações
 
@@ -34,6 +43,5 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
 
     print(dicionario_preco_acoes)                   # Imprime o dicionario das ações e seus preços
     return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços
-
 
 
