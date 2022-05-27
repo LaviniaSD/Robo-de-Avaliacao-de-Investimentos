@@ -1,3 +1,7 @@
+'''
+                                             ####    CRIA FUNCAO pega_cotacao_moedas    ####
+'''
+
 def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUISITO/SUGESTÃO para usar essa função: existir um dicionário com nome dicionario_moedas <----[SUGESTÃO] (para passar como parâmetro para a função) com o padrão {--MOEDA-- : --QUANTIDADE--}  <----[PRÉ REQUISITO]
     import yfinance as yf                                         # Importa o yfinance
             
@@ -26,6 +30,9 @@ def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUIS
     return dicionario_cotacoes_moedas                             # Retorna o dicionario das moedas e cotações
 
 
+'''
+                                             ####    CRIA FUNCAO pega_preco_acoes    ####
+'''
 
 def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO para usar essa função: existir um dicionário com nome dicionario_acoes <----[SUGESTÃO](para passar como parâmetro para a função) com o padrão {--CÓDIGO DA AÇÃO-- : --QUANTIDADE--}   <----[PRÉ REQUISITO]
     import yfinance as yf                         # Importa o yfinance
@@ -45,3 +52,26 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
     return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços
 
 
+'''
+                                             ####    CRIA FUNCAO historico_acoes    ####
+'''
+
+def historico_acoes(dicionario_moedas):
+    import yfinance as yf
+    dicionario_historico_cotacoes_moedas = {}
+    for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário(criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
+            if moeda == "BRL":                                    # Cria uma verificação se a moeda é o Real, para que não haja problemas ao buscar o histórico na biblioteca yfinance
+                print("Não é possível obter histórico de uma moeda em relação à ela mesma")             
+            else:                                                     # Caso não seja a moeda Real o código abaixo será executado
+                moeda_comparada_BRL = f"{moeda}BRL=X"                 # Adapta para o padrão que a yfinance reconhece para buscar o histórico atrelado ao Real.
+                valor = yf.Ticker(moeda_comparada_BRL).history(period = "5y")     # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+                historico_cotacoes_moedas = valor[['Close']].copy()      #Cria um dataframe somente com a data e coluna Close a partir do extraído da biblioteca
+                historico_cotacoes_moedas = historico_cotacoes_moedas.rename(columns = {'Close':'Cotação'})     #Altera o nome da coluna desse DataFrame para cotação
+
+                if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no Yahoo Finanance, como nos casos MOEDABRX=X que não existe.
+                    print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
+                else:
+                    dicionario_historico_cotacoes_moedas[moeda]= historico_cotacoes_moedas # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
+
+    print(dicionario_historico_cotacoes_moedas) # Imprime o dicionario das ações e seus preços
+    return dicionario_historico_cotacoes_moedas # Retorna o dicionario das ações e seus preços
