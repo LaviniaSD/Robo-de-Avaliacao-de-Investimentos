@@ -9,36 +9,17 @@ def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUIS
     for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário(criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
         if moeda == "BRL": # Cria uma verificação se a moeda é o Real, para que não haja problemas ao buscar a cotação na biblioteca yfinance
             dicionario_cotacoes_moedas["BRL"] = 1.00              # Atribui a cotação do Real para o próprio Real que é igual a 1
-        elif moeda == "USD":    
-            moeda_comparada_BRL = "BRL=X"
-            try:                                                  # Verifica se a cotação atrelada ao real será encontrada, e em caso positivo o seguinte código é executado:
-                valor = yf.Ticker(moeda_comparada_BRL).history()  # Acessa o histórico da moeda atrelada ao Real
-                cotacao = valor.at[valor.index[-1],"Close"]       # Busca a cotação mais recente da moeda(pelo preço de fechamento em tempo real quando o mercado financeiro esá ativo, ou o último preço fechado quando não está ativo, que é o da cotação atual.)
-                dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
-            except:
-                                                                  # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
-                try:
-                    valor = yf.Ticker(f"{moeda}BRX=X").history()
-                    cotacao = valor.at[valor.index[-1],"Close"]
-                    dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
-                except IndexError:                                    # Caso o par de moedas não seja encontrado na biblioteca, imprime que a cotação não foi encontrada.
-                    print("Cotação não encontrada")  
-                except:
-                    print("Algo deu errado, tente novamente")  
         else:                                           # Caso não seja a moeda Real o código abaixo será executado
             moeda_comparada_BRL = f"{moeda}BRL=X"                 # Adapta para o padrão que a yfinance reconhece para buscar a cotação da moeda   atrelada ao Real.
             try:                                                  # Verifica se a cotação atrelada ao real será encontrada, e em caso positivo o seguinte código é executado:
-                valor = yf.Ticker(moeda_comparada_BRL).history()  # Acessa o histórico da moeda atrelada ao Real
-                cotacao = valor.at[valor.index[-1],"Close"]       # Busca a cotação mais recente da moeda(pelo preço de fechamento em tempo real quando o mercado financeiro esá ativo, ou o último preço fechado quando não está ativo, que é o da cotação atual.)
+                cotacao = yf.Ticker(moeda_comparada_BRL).info["regularMarketPrice"]  # Acessa o histórico da moeda atrelada ao Real
+                                                                # Busca a cotação mais recente da moeda(pelo preço de fechamento em tempo real quando o mercado financeiro esá ativo, ou o último preço fechado quando não está ativo, que é o da cotação atual.)
                 dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
             except:
-                #print("Algo de errado ocorreu, tente novamente")        # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
+                                                                # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
                 try:
-                    valor = yf.Ticker(f"{moeda}BRX=X").history()
-                    cotacao = valor.at[valor.index[-1],"Close"]
-                    dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
-                except IndexError:                                    # Caso o par de moedas não seja encontrado na biblioteca, imprime que a cotação não foi encontrada.
-                    print("Cotação não encontrada")  
+                    cotacao = yf.Ticker(f"{moeda}BRX=X").info["regularMarketPrice"]
+                    dicionario_cotacoes_moedas[moeda]= round(cotacao,2) 
                 except:
                     print("Algo deu errado, tente novamente")  
                             
@@ -56,9 +37,21 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
     for chave in dicionario_acoes.keys():         # Cria um loop que percorre as chaves(no caso, as ações) do  dicionário(criado a partir do scrapping do HTML) das ações e da quantidade que o cliente possui delas
         valor = yf.Ticker(chave).info.get('currentPrice')       # Acessa o valor atual da ação 
         if valor == None:                         # Cria uma condição que adapta para o padrão de nome das ações no yfinance(Exemplo: nome_da_ação.SA) caso não encontre somente com o código da ação.
-            chave_corrigida = f"{chave}.SA"    
-            valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
-            valor = round(valor,2)                
+            chave_corrigida = f"{chave}.SA"
+            try:    
+                valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
+                valor = round(valor,2)
+            except:
+                try:
+                    valor = yf.Ticker(chave).info.get('regularMarketPrice')
+                    valor = round(valor,2)
+                except:
+                    try:
+                        valor = yf.Ticker(chave_corrigida).info.get('regularMarketPrice')
+                    except:
+                        print(f"Valor da ação {chave} não encontrado")
+                        dicionario_preco_acoes[chave] = "Não encontrado"
+                
             dicionario_preco_acoes[chave] = valor   # Adiciona a ação e seu preço atual ao dicionario_preco_acoes
         else:
             valor = round(valor,2)
@@ -77,22 +70,46 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
     for chave in dicionario_acoes.keys():         
         valor = yf.Ticker(chave).info.get('currentPrice')        
         currency_da_acao = yf.Ticker(chave).info.get('currency')
+        
         if currency_da_acao == "BRL":
+            valor = round(valor,2)
+            dicionario_preco_acoes_em_BRL[chave] = valor   
+        else:
             if valor == None:                          
                 chave_corrigida = f"{chave}.SA"    
                 valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
-                valor = round(valor,2)                
-                dicionario_preco_acoes_em_BRL[chave] = valor   
-            else:
-                valor = round(valor,2)
-                dicionario_preco_acoes_em_BRL[chave] = valor   
-        else:
-            dic_moeda_difer_real = {currency_da_acao: chave}
-            dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
-            for cotacao_real in dict_cotacao_real.values():
-                pass 
-            preco_acao_convertido_BRL = cotacao_real * valor
-            dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
+                
+                if valor == None:
+                    try:
+                        valor = yf.Ticker(chave).info.get('regularMarketPrice')
+                        print(valor)
+                        valor = round(valor,2)
+                        if valor != None:
+                            dicionario_preco_acoes_em_BRL[chave] = valor
+                            dic_moeda_difer_real = {currency_da_acao: chave}
+                            dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
+                            for cotacao_real in dict_cotacao_real.values():
+                                preco_acao_convertido_BRL = cotacao_real * valor
+                                dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2) 
+                        else:
+                            print(f"Valor da ação {chave} não encontrado")
+                            dicionario_preco_acoes_em_BRL[chave] = "Não encontrado" 
+                    except:
+                        print(f"Valor da ação {chave} não encontrado")
+                        dicionario_preco_acoes_em_BRL[chave] = "Não encontrado"                
+                else:
+                    dicionario_preco_acoes_em_BRL[chave] = valor
+                    dic_moeda_difer_real = {currency_da_acao: chave}
+                    dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
+                    for cotacao_real in dict_cotacao_real.values():
+                        preco_acao_convertido_BRL = cotacao_real * valor
+                        dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
+            else:       
+                dic_moeda_difer_real = {currency_da_acao: chave}
+                dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
+                for cotacao_real in dict_cotacao_real.values():
+                    preco_acao_convertido_BRL = cotacao_real * valor
+                    dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
     print(dicionario_preco_acoes_em_BRL)
     return dicionario_preco_acoes_em_BRL
 
@@ -146,6 +163,7 @@ def historico_acoes(dicionario_acoes):
             dicionario_historico_preco_acoes[acao] = historico_preco_acao
     print(dicionario_historico_preco_acoes)
     return dicionario_historico_preco_acoes
+
 
 
 
