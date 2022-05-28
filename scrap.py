@@ -9,3 +9,19 @@ def pegue_site():
     html_lido= BeautifulSoup(html, 'html.parser')
     return comandos_lido
     
+#transforma o valor retornado da função pegue_site em uma variável
+html_lido = pegue_site()
+
+#Pega a tabela na div de classe 'moeda' do html e retorna um dicionário com as moedas e suas quantidades 
+def dic_moedas(hipertext):
+    div_moeda = hipertext.find_all("div", {"class": "moeda"})
+    for moeda in div_moeda:
+        linhas_moeda = moeda.find_all('tr')
+    dicionario_moedas = {}
+    for linha in linhas_moeda:
+        children = linha.findChildren("td")
+        if children == []:
+            children == []
+         else:
+              dicionario_moedas[children[0].text] = int(children[1].text)
+    return dicionario_moedas
