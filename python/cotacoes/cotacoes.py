@@ -56,7 +56,7 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
                                              ####    CRIA FUNCAO historico_acoes    ####
 '''
 
-def historico_acoes(dicionario_moedas):
+def historico_moedas(dicionario_moedas):
     import yfinance as yf
     dicionario_historico_cotacoes_moedas = {}
     for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário(criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
