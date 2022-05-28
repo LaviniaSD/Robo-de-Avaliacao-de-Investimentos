@@ -67,6 +67,35 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
     print(dicionario_preco_acoes)                   # Imprime o dicionario das ações e seus preços
     return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços na moeda local
 
+
+def pega_preco_acao_em_BRL(dicionario_acoes):
+    import yfinance as yf                         
+    dicionario_preco_acoes_em_BRL = {}                   
+    for chave in dicionario_acoes.keys():         
+        valor = yf.Ticker(chave).info.get('currentPrice')        
+        currency_da_acao = yf.Ticker(chave).info.get('currency')
+        if currency_da_acao == "BRL":
+            if valor == None:                          
+                chave_corrigida = f"{chave}.SA"    
+                valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
+                valor = round(valor,2)                
+                dicionario_preco_acoes_em_BRL[chave] = valor   
+            else:
+                valor = round(valor,2)
+                dicionario_preco_acoes_em_BRL[chave] = valor   
+        else:
+            dic_moeda_difer_real = {currency_da_acao: chave}
+            dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
+            for cotacao_real in dict_cotacao_real.values():
+                pass 
+            preco_acao_convertido_BRL = cotacao_real * valor
+            dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
+    print(dicionario_preco_acoes_em_BRL)
+    return dicionario_preco_acoes_em_BRL
+
+
+
+
 '''
                                              ####    CRIA FUNCAO historico_acoes    ####
 '''
