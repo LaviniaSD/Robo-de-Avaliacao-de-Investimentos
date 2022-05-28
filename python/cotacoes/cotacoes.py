@@ -16,7 +16,7 @@ def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUIS
                 cotacao = valor.at[valor.index[-1],"Close"]       # Busca a cotação mais recente da moeda(pelo preço de fechamento em tempo real quando o mercado financeiro esá ativo, ou o último preço fechado quando não está ativo, que é o da cotação atual.)
                 dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
             except:
-                #print("Algo de errado ocorreu, tente novamente")        # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
+                                                                  # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
                 try:
                     valor = yf.Ticker(f"{moeda}BRX=X").history()
                     cotacao = valor.at[valor.index[-1],"Close"]
@@ -67,6 +67,9 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
     print(dicionario_preco_acoes)                   # Imprime o dicionario das ações e seus preços
     return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços na moeda local
 
+'''
+                                        ####    CRIA FUNCAO pega_preco_acao_em_BRL   ####
+'''
 
 def pega_preco_acao_em_BRL(dicionario_acoes):
     import yfinance as yf                         
@@ -119,3 +122,31 @@ def historico_moedas(dicionario_moedas):
 
     print(dicionario_historico_cotacoes_moedas) # Imprime o dicionario das ações e seus preços
     return dicionario_historico_cotacoes_moedas # Retorna o dicionario das ações e seus preços
+
+
+
+def historico_acoes(dicionario_acoes):
+    import yfinance as yf
+    dicionario_historico_preco_acoes = {}
+    for acao in dicionario_acoes.keys():
+        historico_acao = yf.Ticker(acao).history(period = "5y")
+        if "Empty" in str(historico_acao):
+            historico_acao = yf.Ticker(f"{acao}.SA").history(period = "5y")
+            if "Empty" in str(historico_acao):
+                print("Ação não encontrada no yahoo Finance")
+                dicionario_historico_preco_acoes[acao] = "Ação não encontrada" 
+            else:
+                historico_preco_acao = historico_acao[["Close"]].copy()
+                historico_preco_acao = historico_preco_acao.rename(columns = {"Close": "Preço"})
+                dicionario_historico_preco_acoes[acao] = historico_preco_acao
+        
+        else:  
+            historico_preco_acao = historico_acao[["Close"]].copy()
+            historico_preco_acao = historico_preco_acao.rename(columns = {"Close": "Preço"})
+            dicionario_historico_preco_acoes[acao] = historico_preco_acao
+    print(dicionario_historico_preco_acoes)
+    return dicionario_historico_preco_acoes
+
+
+
+
