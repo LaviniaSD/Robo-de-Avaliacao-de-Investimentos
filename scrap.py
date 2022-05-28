@@ -25,3 +25,17 @@ def dic_moedas(hipertext):
          else:
               dicionario_moedas[children[0].text] = int(children[1].text)
     return dicionario_moedas
+
+#Pega a tabela na div de classe 'acao' do html e retorna um dicionário com as ações e suas quantidades 
+def dic_acoes(hipertext):
+    div_acoes = hipertext.find_all("div", {"class": "acao"})
+    for acao in div_acoes:
+        linhas_acoes = acao.find_all('tr')
+    dicionario_acoes = {}
+    for linha in linhas_acoes:
+        children = linha.findChildren("td")
+        if children == []:
+            children == []
+        else:
+            dicionario_acoes[children[0].text] = int(children[1].text)
+    return dicionario_acoes
