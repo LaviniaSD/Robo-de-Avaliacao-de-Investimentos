@@ -9,7 +9,23 @@ def pega_cotacao_moedas(dicionario_moedas):                        # PRÉ REQUIS
     for moeda in dicionario_moedas.keys():                        # Cria um loop que percorre as chaves(no caso, as moedas/"currencies") do  dicionário(criado a partir do scrapping do HTML) das moedas e da quantidade que o cliente possui delas
         if moeda == "BRL": # Cria uma verificação se a moeda é o Real, para que não haja problemas ao buscar a cotação na biblioteca yfinance
             dicionario_cotacoes_moedas["BRL"] = 1.00              # Atribui a cotação do Real para o próprio Real que é igual a 1
-        else:                                                     # Caso não seja a moeda Real o código abaixo será executado
+        elif moeda == "USD":    
+            moeda_comparada_BRL = "BRL=X"
+            try:                                                  # Verifica se a cotação atrelada ao real será encontrada, e em caso positivo o seguinte código é executado:
+                valor = yf.Ticker(moeda_comparada_BRL).history()  # Acessa o histórico da moeda atrelada ao Real
+                cotacao = valor.at[valor.index[-1],"Close"]       # Busca a cotação mais recente da moeda(pelo preço de fechamento em tempo real quando o mercado financeiro esá ativo, ou o último preço fechado quando não está ativo, que é o da cotação atual.)
+                dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
+            except:
+                #print("Algo de errado ocorreu, tente novamente")        # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
+                try:
+                    valor = yf.Ticker(f"{moeda}BRX=X").history()
+                    cotacao = valor.at[valor.index[-1],"Close"]
+                    dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
+                except IndexError:                                    # Caso o par de moedas não seja encontrado na biblioteca, imprime que a cotação não foi encontrada.
+                    print("Cotação não encontrada")  
+                except:
+                    print("Algo deu errado, tente novamente")  
+        else:                                           # Caso não seja a moeda Real o código abaixo será executado
             moeda_comparada_BRL = f"{moeda}BRL=X"                 # Adapta para o padrão que a yfinance reconhece para buscar a cotação da moeda   atrelada ao Real.
             try:                                                  # Verifica se a cotação atrelada ao real será encontrada, e em caso positivo o seguinte código é executado:
                 valor = yf.Ticker(moeda_comparada_BRL).history()  # Acessa o histórico da moeda atrelada ao Real
@@ -40,7 +56,7 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
     for chave in dicionario_acoes.keys():         # Cria um loop que percorre as chaves(no caso, as ações) do  dicionário(criado a partir do scrapping do HTML) das ações e da quantidade que o cliente possui delas
         valor = yf.Ticker(chave).info.get('currentPrice')       # Acessa o valor atual da ação 
         if valor == None:                         # Cria uma condição que adapta para o padrão de nome das ações no yfinance(Exemplo: nome_da_ação.SA) caso não encontre somente com o código da ação.
-            chave_corrigida = f"{chave}.SA"     
+            chave_corrigida = f"{chave}.SA"    
             valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
             valor = round(valor,2)                
             dicionario_preco_acoes[chave] = valor   # Adiciona a ação e seu preço atual ao dicionario_preco_acoes
@@ -49,8 +65,7 @@ def pega_preco_acoes(dicionario_acoes):           # PRÉ REQUISITO/SUGESTÃO par
             dicionario_preco_acoes[chave] = valor   # Adiciona a ação e seu preço atual ao dicionario_preco_acoes
 
     print(dicionario_preco_acoes)                   # Imprime o dicionario das ações e seus preços
-    return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços
-
+    return dicionario_preco_acoes                   # Retorna o dicionario das ações e seus preços na moeda local
 
 '''
                                              ####    CRIA FUNCAO historico_acoes    ####
