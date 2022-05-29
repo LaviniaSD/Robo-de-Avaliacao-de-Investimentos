@@ -22,8 +22,8 @@ def dic_moedas(hipertext):
         children = linha.findChildren("td")
         if children == []:
             children == []
-         else:
-              dicionario_moedas[children[0].text] = int(children[1].text)
+        else:
+            dicionario_moedas[children[0].text] = int(children[1].text)
     return dicionario_moedas
 
 #Pega a tabela na div de classe 'acao' do html e retorna um dicionário com as ações e suas quantidades 
