@@ -1,0 +1,42 @@
+* {
+	font-family:Copperplate;
+	font-size:20px;
+	text-align:center;
+	background-color:#9ec2e6;
+	margin-bottom:7px;
+	
+}
+
+body {
+	padding:50px;
+	
+}
+
+
+h1 {
+	font-size:30px;
+    font-weight: bold;
+	background-color:white;
+
+}
+
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border:5px solid white;
+	background-color:#f0f6fc;
+	padding:10px;
+
+}
+
+
+img {
+	height:50px;
+	width:50px;
+}
+
+hr {
+	border-color:#135e96;
+}
+
