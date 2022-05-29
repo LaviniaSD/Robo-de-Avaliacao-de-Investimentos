@@ -7,7 +7,7 @@ def pegue_site():
     url = input("Insira aqui sua url: ")
     html = urlopen(url)
     html_lido= BeautifulSoup(html, 'html.parser')
-    return comandos_lido
+    return html_lido
     
 #transforma o valor retornado da função pegue_site em uma variável
 html_lido = pegue_site()
