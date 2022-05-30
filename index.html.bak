@@ -8,22 +8,22 @@
 <meta name="description"="Banco de investimentos"><!--Descrição -->
 <meta name="keywords" content="banco,moeda,ações"><!--Palavras chaves -->
 <meta name="author"content="Lavínia Dias, Yonathan Rabinovici, George Vaz, Luan Carvalho, Téo Marasciulo"><!--Autores -->
-<link rel="shortcut icon" type="image/x-icon" href="./site1/favicon.ico"> <!--Ícone do site(favicon) -->
-<link rel="stylesheet" href="./site1/estilo1.css"><!--Folha de estilo -->
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> <!--Ícone do site(favicon) -->
+<link rel="stylesheet" href="estilo1.css"><!--Folha de estilo -->
 </head>
 
 <body>
 <section id='links'>
 <nav><!--link para outras carteiras -->
-<a href="./site2/pagina2.html">	Carteira 2</a> <br>
-<a href="./site3/pagina3.html">	Carteira 3</a> <br>
+<a href="">	Carteira 2</a> <br>
+<a href="">	Carteira 3</a> <br>
 </nav>
 </section>
 
 <!--Cabeçalho -->
 <header>
 <h1>Banco Gllyt</h1>
-<img src="./site1/imagem1.gif" alt="Gif de moeda rodando">
+<img src="imagem1.gif" alt="Gif de moeda rodando">
 </header>
 
 <hr>
