@@ -1,0 +1,4 @@
+yfinance
+urllib3
+bs4
+openpyxl

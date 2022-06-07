@@ -10,7 +10,7 @@ def pegue_site():
     return html_lido
     
 #transforma o valor retornado da função pegue_site em uma variável
-html_lido = pegue_site()
+#html_lido = pegue_site()
 
 #Pega a tabela na div de classe 'moeda' do html e retorna um dicionário com as moedas e suas quantidades 
 def dic_moedas(hipertext):
