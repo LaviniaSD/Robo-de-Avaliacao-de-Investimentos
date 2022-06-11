@@ -1,5 +1,6 @@
 import openpyxl
 from openpyxl.utils import get_column_letter
+from glob import glob
 
 
 def dados(ws, ativo, cota, col):
@@ -28,6 +29,15 @@ def redimensionar(ws):
         ws.column_dimensions[col].width = value + 10
     return ws
 
+def nome_planilha():
+    lista_total_arquivos = glob("Carteira(*).xlsx")  # retorna uma lista com os nomes dos arquivos existentes na extensão xlsx
+
+    numero = len(lista_total_arquivos) + 1
+
+    novo_nome_arquivo = 'Carteira(%d).xlsx' % numero  # criou um novo nome de arquivo com indexador atualizado
+
+    return(novo_nome_arquivo)
+
 
 def planilha(moedas, acoes, moedas_cota, acoes_cota):
 
@@ -44,5 +54,6 @@ def planilha(moedas, acoes, moedas_cota, acoes_cota):
     # Redimensionando as celas
     ws1 = redimensionar(ws1)
 
-    dest_filename = input("Digite o nome  de arquivo: ")+'.xlsx'
+    dest_filename = nome_planilha()# input("Digite o nome  de arquivo: ")+'.xlsx'
+    print(dest_filename)
     wb.save(filename=dest_filename)
