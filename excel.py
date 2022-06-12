@@ -3,57 +3,66 @@ from openpyxl.utils import get_column_letter
 from glob import glob
 
 
-def dados(ws, ativo, cota, col):
+def dados(ws, dicio_ativo, dicio_cota, coluna):     # Adiciona os dados dos dicionários na planilha
 
     linha = 2
-    for nome in ativo.keys():
-        quant = ativo[nome]
-        cotacao = quant * cota[nome]
+    for nome_ativo, quant_ativo in dicio_ativo.items():         # Desempacota os dados do dicionário do ativo
 
-        ws.cell(column=col, row=linha, value=nome)
-        ws.cell(column=col+1, row=linha, value=quant)
-        ws.cell(column=col+2, row=linha, value=cotacao).number_format = 'R$#,##0.00'
+        cotacao_ativo = quant_ativo * dicio_cota[nome_ativo]    # Calcula a cotação
+
+        ws.cell(column=coluna, row=linha, value=nome_ativo)
+        ws.cell(column=coluna+1, row=linha, value=quant_ativo)
+        ws.cell(column=coluna+2, row=linha, value=cotacao_ativo).number_format = 'R$#,##0.00'
+        # Adiciona os dados do ativo nas celulas especificadas
 
         linha += 1
     return ws
 
 
-def redimensionar(ws):
+def redimensionar(ws):  # Redimensiona as colunas da planilha
 
-    dims = {}
-    for row in ws.rows:
-        for cell in row:
-            if cell.value:
-                dims[cell.column_letter] = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
-    for col, value in dims.items():
-        ws.column_dimensions[col].width = value + 10
+    dimensoes = {}
+    for linha in ws.rows:
+        for celula in linha:
+            if celula.value:
+                dimensoes[celula.column_letter] = max((dimensoes.get(celula.column_letter, 0), len(str(celula.value))))
+                # Armazena o tamanho do maior valor das celulas para cada coluna
+
+    for coluna, valor in dimensoes.items():
+        ws.column_dimensions[coluna].width = valor + 10
+        # Usa os valores armazenados para redimensionar cada coluna
     return ws
 
-def nome_planilha():
-    lista_total_arquivos = glob("Carteira(*).xlsx")  # retorna uma lista com os nomes dos arquivos existentes na extensão xlsx
 
-    numero = len(lista_total_arquivos) + 1
+def nome_planilha():    # Gera o nome da pasta de trabalho com base nos outros arquivos presentes no diretorio atual
 
-    novo_nome_arquivo = 'Carteira(%d).xlsx' % numero  # criou um novo nome de arquivo com indexador atualizado
+    lista_arquivos = glob("Carteira*.xlsx")
+    # Cria uma lista com os nomes dos arquivos existentes no formato especificado
 
-    return(novo_nome_arquivo)
+    numero = len(lista_arquivos) + 1
+
+    if numero == 1:
+        return "Carteira.xlsx"
+        # Retorna o nome do arquivo
+    else:
+        return "Carteira (%d).xlsx" % numero
+        # Retorna um novo nome do arquivo com indexador atualizado
 
 
-def planilha(moedas, acoes, moedas_cota, acoes_cota):
+def planilha(dicio_moedas, dicio_acoes, moedas_cota, acoes_cota):   # Cria uma planilha com os dados da carteira
 
-    wb = openpyxl.Workbook()
+    wb = openpyxl.Workbook()    # Cria uma pasta de trabalho
 
-    ws1 = wb.active
-    ws1.title = "Carteira"
+    ws1 = wb.active             # Recebe a primeira planilha ativa
+    ws1.title = "Carteira"      # Nomeia a planilha
 
     ws1.append(["Moedas", "Quantidade", "Cotação", "", "Ações", "Quantidade", "Cotação"])
+    # Adiciona a lista como linha na planilha
 
-    ws1 = dados(ws1, moedas, moedas_cota, 1)
-    ws1 = dados(ws1, acoes, acoes_cota, 5)
+    ws1 = dados(ws1, dicio_moedas, moedas_cota, 1)  # Adiciona os dados das moedas na planilha
+    ws1 = dados(ws1, dicio_acoes, acoes_cota, 5)    # Adiciona os dados das ações na planilha
 
-    # Redimensionando as celas
-    ws1 = redimensionar(ws1)
+    ws1 = redimensionar(ws1)    # Redimensiona as colunas da planilha
 
-    dest_filename = nome_planilha()# input("Digite o nome  de arquivo: ")+'.xlsx'
-    print(dest_filename)
-    wb.save(filename=dest_filename)
+    dest_filename = nome_planilha()     # Recebe o nome da pasta de trabalho
+    wb.save(filename=dest_filename)     # Salva a pasta de trabalho
