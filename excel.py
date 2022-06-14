@@ -1,7 +1,8 @@
+#bibliotecas necessárias
 import openpyxl as opx
 import qrcode
 
-
+#Função que lê os dicionários de moedas e ações e suas cotações e retorna o total (em reais) da carteira.
 def valor_total(moedas, acoes, moedas_cota, acoes_cota):
     soma=0
     for moeda, quant_moeda in moedas.items():
@@ -11,6 +12,7 @@ def valor_total(moedas, acoes, moedas_cota, acoes_cota):
         soma += quant_acao * acoes_cota[acao]
     return soma
 
+#Função que insere um qrcode com o valor total da carteira na planilha excel da mesma.
 def qr(soma):
     wb = opx.load_workbook(filename="carteira.xlsx")
     ws = wb.create_sheet(title="QrCode")
