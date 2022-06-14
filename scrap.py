@@ -34,7 +34,22 @@ def dic_moedas(hipertext): #Acha no html a classe moeda e retorna um dicionário
         print('Não foi possível achar moedas nessa carteira')
     else:
         return dicionario_moedas
+    
+    
 
-
-
-     
+def dic_acoes(hipertext):#Acha no html a classe 'acao' e retorna um dicionário com as informações que estão em uma tabela dentro da classe
+    try:
+        div_acoes = hipertext.find_all("div", {"class": "acao"})
+        for acao in div_acoes:
+            linhas_acoes = acao.find_all('tr')
+        dicionario_acoes = {}
+        for linha in linhas_acoes:
+            children = linha.findChildren("td")
+            if children == []:
+                children == []
+            else:
+                dicionario_acoes[children[0].text] = float(children[1].text)
+    except:
+        print('Não foi possível achar ações nessa carteira')
+    else:
+        return dicionario_acoes
