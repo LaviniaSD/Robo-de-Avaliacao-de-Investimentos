@@ -15,9 +15,6 @@ def pegue_site(): # Lê a url inserida pelo usuário e retorna o html do site
 
 
 
-
-
-
 def dic_moedas(hipertext): #Acha no html a classe moeda e retorna um dicionário com as informações que estão em uma tabela dentro da classe
     try:
         div_moeda = hipertext.find_all("div", {"class": "moeda"})
@@ -36,8 +33,6 @@ def dic_moedas(hipertext): #Acha no html a classe moeda e retorna um dicionário
         return dicionario_moedas
     
     
-#transforma o valor retornado da função pegue_site em uma variável
-#html_lido = pegue_site()
 
 def dic_acoes(hipertext):#Acha no html a classe 'acao' e retorna um dicionário com as informações que estão em uma tabela dentro da classe
     try:
