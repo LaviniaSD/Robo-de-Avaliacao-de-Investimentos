@@ -157,3 +157,29 @@ def historico_acoes(dicionario_acoes):
     return dicionario_historico_preco_acoes
 
 
+                                        ### FUNÇÕES DE APOIO ###
+def apoio1(): # Função com o bloco try except da pega_preco_acao_em_BRL
+    try:
+        valor = yf.Ticker(chave).info.get('regularMarketPrice')
+        print(valor)
+        valor = round(valor,2)
+        if valor != None:
+            dicionario_preco_acoes_em_BRL[chave] = valor
+            dic_moeda_difer_real = {currency_da_acao: chave}
+            dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
+            for cotacao_real in dict_cotacao_real.values():
+                preco_acao_convertido_BRL = cotacao_real * valor
+                dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2) 
+        else:
+            print(f"Valor da ação {chave} não encontrado")
+            dicionario_preco_acoes_em_BRL[chave] = "Não encontrado" 
+    except:
+        print(f"Valor da ação {chave} não encontrado")
+        dicionario_preco_acoes_em_BRL[chave] = "Não encontrado"
+
+def apoio2(): ## Converte o valor de uma ação estrangeira para real
+    dic_moeda_difer_real = {currency_da_acao: chave}
+    dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
+    for cotacao_real in dict_cotacao_real.values():
+        preco_acao_convertido_BRL = cotacao_real * valor
+        dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
