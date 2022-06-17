@@ -78,9 +78,10 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
             if valor == None:                          
                 chave_corrigida = f"{chave}.SA"    
                 valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
-                
+                currency_da_acao = yf.Ticker(chave_corrigida).info.get('currency')
+
                 if valor == None:
-                    apoio1()             
+                    apoio1(currency_da_acao, chave, dicionario_preco_acoes_em_BRL)             
                 else:
                     dicionario_preco_acoes_em_BRL[chave] = valor
                     dic_moeda_difer_real = {currency_da_acao: chave}
@@ -89,7 +90,7 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
                         preco_acao_convertido_BRL = cotacao_real * valor
                         dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
             else:       
-                apoio2()
+                apoio2(currency_da_acao, chave, dicionario_preco_acoes_em_BRL,valor)
     return dicionario_preco_acoes_em_BRL
 
 
@@ -144,7 +145,8 @@ def historico_acoes(dicionario_acoes):
 
 
                                         ### FUNÇÕES DE APOIO ###
-def apoio1(): # Função com o bloco try except da pega_preco_acao_em_BRL
+def apoio1(currency_da_acao, chave, dicionario_preco_acoes_em_BRL): # Função com o bloco try except da pega_preco_acao_em_BRL
+    import yfinance as yf
     try:
         valor = yf.Ticker(chave).info.get('regularMarketPrice')
         print(valor)
@@ -163,9 +165,10 @@ def apoio1(): # Função com o bloco try except da pega_preco_acao_em_BRL
         print(f"Valor da ação {chave} não encontrado")
         dicionario_preco_acoes_em_BRL[chave] = "Não encontrado"
 
-def apoio2(): ## Converte o valor de uma ação estrangeira para real
+def apoio2(currency_da_acao, chave, dicionario_preco_acoes_em_BRL, valor): ## Converte o valor de uma ação estrangeira para real
     dic_moeda_difer_real = {currency_da_acao: chave}
     dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
     for cotacao_real in dict_cotacao_real.values():
         preco_acao_convertido_BRL = cotacao_real * valor
         dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
+
