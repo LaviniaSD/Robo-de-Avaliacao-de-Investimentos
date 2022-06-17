@@ -6,8 +6,11 @@ def pega_cotacao_moedas(dicionario_moedas):
     import yfinance as yf                                        
             
     dicionario_cotacoes_moedas = {}                             # Cria o dicionário em que as moedas e suas respectivas cotações serão armazenadas
-    for moeda in dicionario_moedas.keys():                        
-        if moeda == "BRL":                                      # Cria uma verificação se a moeda é o Real
+    for moeda in dicionario_moedas.keys():
+        if moeda.endswith("BRL=X") or moeda.endswith("BRX=X"):
+            cotacao = yf.Ticker(moeda).info["regularMarketPrice"]  # Acessa o histórico da moeda atrelada ao Real
+            dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
+        elif moeda == "BRL":                                      # Cria uma verificação se a moeda é o Real
             dicionario_cotacoes_moedas["BRL"] = 1.00            # Atribui a cotação do Real para o próprio Real que é igual a 1
         else:                                           
             moeda_comparada_BRL = f"{moeda}BRL=X"               # Adapta para o padrão que a yfinance reconhece para buscar a cotação da moeda   
