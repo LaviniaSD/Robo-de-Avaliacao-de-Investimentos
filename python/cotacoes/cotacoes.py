@@ -165,4 +165,3 @@ def apoio2(): ## Converte o valor de uma ação estrangeira para real
         preco_acao_convertido_BRL = cotacao_real * valor
         dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
 
-print(pega_preco_acao_em_BRL({"VALE3":1}))
