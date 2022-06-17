@@ -21,7 +21,7 @@ grafico_moedas = graficos_historicos.cria_grafico_moedas(dicionario_historico_co
 # historico_moedas=cotacoes.historico_moedas(dicionario_moedas)
 # historico_acoes=cotacoes.historico_acoes(dicionario_acoes)
 excel.planilha(dicionario_moedas, dicionario_acoes, dicionario_cotacoes_moedas, dicionario_preco_acoes_em_BRL)
-graficos_historicos.graficos(historico_moedas,historico_acoes)
+# graficos_historicos.graficos(dic_historico_moedas,dic_historico_acoes)
 valor_total=excel.valor_total(dicionario_moedas, dicionario_acoes, cotacao_moedas, preco_acao_em_BRL)
 excel.qrcode(valor_total)
 
