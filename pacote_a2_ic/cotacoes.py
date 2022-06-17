@@ -7,7 +7,7 @@ def pega_cotacao_moedas(dicionario_moedas):
             
     dicionario_cotacoes_moedas = {}                             # Cria o dicionário em que as moedas e suas respectivas cotações serão armazenadas
     for moeda in dicionario_moedas.keys():
-        if moeda.endswith("BRL=X") or moeda.endswith("BRX=X"):
+        if "BRL=X" in moeda or "BRX=X" in moeda:
             cotacao = yf.Ticker(moeda).info["regularMarketPrice"]  # Acessa o histórico da moeda atrelada ao Real
             dicionario_cotacoes_moedas[moeda]= round(cotacao,2)
         elif moeda == "BRL":                                      # Cria uma verificação se a moeda é o Real
