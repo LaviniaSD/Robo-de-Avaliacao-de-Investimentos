@@ -19,7 +19,9 @@ def pega_cotacao_moedas(dicionario_moedas):
                     cotacao = yf.Ticker(f"{moeda}BRX=X").info["regularMarketPrice"]
                     dicionario_cotacoes_moedas[moeda]= round(cotacao,2)        # Adiciona a moeda e sua cotação ao dicionario_cotacoes_moedas
                 except:
-                    print("Cotação não encontrada")  
+                    #cotação não encontrada
+                    # print("Cotação da moeda não encontrada")
+                    print("")   
                             
     return dicionario_cotacoes_moedas                                          # Retorna o dicionario das moedas e cotações
 
