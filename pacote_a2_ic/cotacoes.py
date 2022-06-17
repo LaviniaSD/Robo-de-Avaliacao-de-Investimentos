@@ -75,23 +75,7 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
                 valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
                 
                 if valor == None:
-                    try:
-                        valor = yf.Ticker(chave).info.get('regularMarketPrice')
-                        print(valor)
-                        valor = round(valor,2)
-                        if valor != None:
-                            dicionario_preco_acoes_em_BRL[chave] = valor
-                            dic_moeda_difer_real = {currency_da_acao: chave}
-                            dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
-                            for cotacao_real in dict_cotacao_real.values():
-                                preco_acao_convertido_BRL = cotacao_real * valor
-                                dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2) 
-                        else:
-                            print(f"Valor da ação {chave} não encontrado")
-                            dicionario_preco_acoes_em_BRL[chave] = "Não encontrado" 
-                    except:
-                        print(f"Valor da ação {chave} não encontrado")
-                        dicionario_preco_acoes_em_BRL[chave] = "Não encontrado"                
+                    apoio1()             
                 else:
                     dicionario_preco_acoes_em_BRL[chave] = valor
                     dic_moeda_difer_real = {currency_da_acao: chave}
@@ -100,12 +84,9 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
                         preco_acao_convertido_BRL = cotacao_real * valor
                         dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
             else:       
-                dic_moeda_difer_real = {currency_da_acao: chave}
-                dict_cotacao_real = pega_cotacao_moedas(dic_moeda_difer_real)
-                for cotacao_real in dict_cotacao_real.values():
-                    preco_acao_convertido_BRL = cotacao_real * valor
-                    dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
+                apoio2()
     return dicionario_preco_acoes_em_BRL
+
 
 
 
