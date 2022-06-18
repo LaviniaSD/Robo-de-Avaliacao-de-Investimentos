@@ -64,28 +64,23 @@ pip install yfinance
 pip install qrcode
 ```
 
-- [ ] Instale a biblioteca qrcode do Python
+- [ ] Instale a biblioteca pandas do Python
   
 ```
 pip install pandas
 ```
 
-- [ ] Instale a biblioteca qrcode do Python
+- [ ] Instale a biblioteca datetime do Python
   
 ```
 pip install datetime
 ```
 
-- [ ] Instale a biblioteca qrcode do Python
-  
-```
-pip install os
-```
 
-- [ ] Instale a biblioteca qrcode do Python
+- [ ] Instale a biblioteca glob do Python
   
 ```
-pip install glob
+pip install glob2
 ```
 
 
