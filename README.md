@@ -96,9 +96,9 @@ pip install kaleido
 ```
 
 
-- [ ] Instale os módulos principal.py, excel.py,webscraping.py,financas.py
+- [ ] Instale os módulos index.py, excel.py,webscraping.py,financas.py
 - [ ] Coloque todos os módulos na mesma pasta de seu computador
-- [ ] Execute o módulo principal.py
+- [ ] Execute o módulo index.py
 - [ ] insira uma URL que atenda aos [pré-requisitos](#pre-requisitos),caso não tenha uma, utilize nossas carteiras teste:
   * [Carteira 1](https://laviniasd.github.io/Robo-de-Avaliacao-de-Investimentos/index.html)
   * [Carteira 2](https://laviniasd.github.io/Robo-de-Avaliacao-de-Investimentos/site2/pagina2.html)
