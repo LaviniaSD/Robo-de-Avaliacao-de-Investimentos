@@ -1,3 +1,4 @@
+#Importe as bibliotecas necessárias
 import openpyxl as opx
 from openpyxl import load_workbook
 from openpyxl.drawing.image import Image 
@@ -12,7 +13,7 @@ def dados(ws, dicio_ativo, dicio_cota, coluna):     # Adiciona os dados dos dici
     linha = 2
     for nome_ativo, quant_ativo in dicio_ativo.items():         # Desempacota os dados do dicionário do ativo
         if type(dicio_cota[nome_ativo]) == float:
-            cotacao_ativo = quant_ativo * dicio_cota[nome_ativo]    # Calcula a cotação
+            cotacao_ativo = quant_ativo * dicio_cota[nome_ativo]    # Calcula o valor total pareado ao real
             ws.cell(column=coluna, row=linha, value=nome_ativo)
             ws.cell(column=coluna+1, row=linha, value=quant_ativo)
             ws.cell(column=coluna+2, row=linha, value=cotacao_ativo).number_format = 'R$#,##0.00'
@@ -50,7 +51,7 @@ def planilha(dicio_moedas, dicio_acoes, moedas_cota, acoes_cota):   # Cria uma p
     ws1 = wb.active             # Recebe a primeira planilha ativa
     ws1.title = "Carteira"      # Nomeia a planilha
 
-    ws1.append(["Moedas", "Quantidade", "Cotação", "", "Ações", "Quantidade", "Cotação"])
+    ws1.append(["Moedas", "Quantidade", "Valor total", "", "Ações", "Quantidade", "Valor total"])
     # Adiciona a lista como linha na planilha
 
     ws1 = dados(ws1, dicio_moedas, moedas_cota, 1)  # Adiciona os dados das moedas na planilha
