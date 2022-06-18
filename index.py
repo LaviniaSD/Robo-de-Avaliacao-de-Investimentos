@@ -2,7 +2,7 @@ from pacote_a2_ic import scraping
 from pacote_a2_ic import cotacoes
 from pacote_a2_ic import excel
 from pacote_a2_ic import graficos_historicos
-from pacote_a2_ic.scrap import *
+from pacote_a2_ic.scraping import *
 from pacote_a2_ic.cotacoes import *
 from pacote_a2_ic.excel import *
 from pacote_a2_ic.graficos_historicos import *
