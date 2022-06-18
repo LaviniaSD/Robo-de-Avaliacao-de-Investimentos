@@ -11,16 +11,17 @@ def dados(ws, dicio_ativo, dicio_cota, coluna):     # Adiciona os dados dos dici
 
     linha = 2
     for nome_ativo, quant_ativo in dicio_ativo.items():         # Desempacota os dados do dicionário do ativo
-        try:    
+        if type(dicio_cota[nome_ativo]) == float:
             cotacao_ativo = quant_ativo * dicio_cota[nome_ativo]    # Calcula a cotação
-
             ws.cell(column=coluna, row=linha, value=nome_ativo)
             ws.cell(column=coluna+1, row=linha, value=quant_ativo)
             ws.cell(column=coluna+2, row=linha, value=cotacao_ativo).number_format = 'R$#,##0.00'
             # Adiciona os dados do ativo nas celulas especificadas
-            linha += 1
-        except:
-            print(f"Não foi possível adicionar {nome_ativo} à planilha")    
+        else:
+            ws.cell(column=coluna, row=linha, value=nome_ativo)
+            ws.cell(column=coluna+1, row=linha, value=quant_ativo)
+            ws.cell(column=coluna+2, row=linha, value='Não foi possível calcular').number_format = 'R$#,##0.00'
+        linha += 1
     return ws
 
 
@@ -91,4 +92,3 @@ def qr(soma):
     img = opx.drawing.image.Image('total.png')
     ws.add_image(img, "A1")
     wb.save(filename='BANCO_GLLYT.xlsx')
-
