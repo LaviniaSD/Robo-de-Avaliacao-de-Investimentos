@@ -1,0 +1,11 @@
+yfinance
+urllib3
+bs4
+openpyxl
+pandas
+datetime
+os
+kaleido
+glob
+qrcode
+plotly
