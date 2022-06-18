@@ -1,4 +1,8 @@
-import openpyxl
+import openpyxl as opx
+from openpyxl import load_workbook
+from openpyxl.drawing.image import Image 
+import qrcode
+import pandas as pd
 from openpyxl.utils import get_column_letter
 from glob import glob
 
@@ -34,24 +38,12 @@ def redimensionar(ws):  # Redimensiona as colunas da planilha
     return ws
 
 
-def nome_planilha():    # Gera o nome da pasta de trabalho com base nos outros arquivos presentes no diretorio atual
 
-    lista_arquivos = glob("Carteira*.xlsx")
-    # Cria uma lista com os nomes dos arquivos existentes no formato especificado
-
-    numero = len(lista_arquivos) + 1
-
-    if numero == 1:
-        return "Carteira.xlsx"
-        # Retorna o nome do arquivo
-    else:
-        return "Carteira (%d).xlsx" % numero
-        # Retorna um novo nome do arquivo com indexador atualizado
 
 
 def planilha(dicio_moedas, dicio_acoes, moedas_cota, acoes_cota):   # Cria uma planilha com os dados da carteira
 
-    wb = openpyxl.Workbook()    # Cria uma pasta de trabalho
+    wb = opx.Workbook()    # Cria uma pasta de trabalho
 
     ws1 = wb.active             # Recebe a primeira planilha ativa
     ws1.title = "Carteira"      # Nomeia a planilha
@@ -64,14 +56,11 @@ def planilha(dicio_moedas, dicio_acoes, moedas_cota, acoes_cota):   # Cria uma p
 
     ws1 = redimensionar(ws1)    # Redimensiona as colunas da planilha
 
-    dest_filename = nome_planilha()     # Recebe o nome da pasta de trabalho
-    wb.save(filename=dest_filename)     # Salva a pasta de trabalho
+    wb.save(filename='BANCO_GLLYT.xlsx')     # Salva a pasta de trabalho
+
+    
 
 
-
-#bibliotecas necessárias
-import openpyxl as opx
-import qrcode
 
 #Função que lê os dicionários de moedas e ações e suas cotações e retorna o total (em reais) da carteira.
 def valor_total(moedas, acoes, moedas_cota, acoes_cota):
@@ -83,9 +72,10 @@ def valor_total(moedas, acoes, moedas_cota, acoes_cota):
         soma += quant_acao * acoes_cota[acao]
     return soma
 
+
 #Função que insere um qrcode com o valor total da carteira na planilha excel da mesma.
 def qr(soma):
-    wb = opx.load_workbook(filename="carteira.xlsx")
+    wb = opx.load_workbook(filename='BANCO_GLLYT.xlsx' )
     ws = wb.create_sheet(title="QrCode")
     qr = qrcode.QRCode(version = 1, error_correction = qrcode.constants.ERROR_CORRECT_H,box_size = 10, border = 4)
     qr.add_data(soma)
@@ -93,7 +83,5 @@ def qr(soma):
     img.save('total.png')
     img = opx.drawing.image.Image('total.png')
     ws.add_image(img, "A1")
-    wb.save(filename="carteira.xlsx")
-
-
+    wb.save(filename='BANCO_GLLYT.xlsx')
 
