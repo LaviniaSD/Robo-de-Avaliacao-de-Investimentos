@@ -1,3 +1,4 @@
+#Importe as bibliotecas necessárias
 import openpyxl as opx
 from openpyxl import load_workbook
 import plotly.graph_objs as go
@@ -7,7 +8,7 @@ import os
 from datetime import datetime
 
 
-def graficos_acoes(dicionario_historico_acoes):
+def graficos_acoes(dicionario_historico_acoes): #Crie 3 gráficos candlestick relacionados às ações ao longo do tempo.
     wb = opx.load_workbook(filename='BANCO_GLLYT.xlsx')
     contador = 0
     for acao in dicionario_historico_acoes.keys():
@@ -34,7 +35,7 @@ def graficos_acoes(dicionario_historico_acoes):
 
 
 
-def graficos_moedas(dicionario_historico_moedas):
+def graficos_moedas(dicionario_historico_moedas):#Crie 3 gráficos candlestick relacionados às moedas ao longo do tempo.
     wb = opx.load_workbook(filename='BANCO_GLLYT.xlsx')
     contador = 0
     for moeda in dicionario_historico_moedas.keys():
