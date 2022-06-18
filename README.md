@@ -63,6 +63,32 @@ pip install yfinance
 ```
 pip install qrcode
 ```
+
+- [ ] Instale a biblioteca qrcode do Python
+  
+```
+pip install pandas
+```
+
+- [ ] Instale a biblioteca qrcode do Python
+  
+```
+pip install datetime
+```
+
+- [ ] Instale a biblioteca qrcode do Python
+  
+```
+pip install os
+```
+
+- [ ] Instale a biblioteca qrcode do Python
+  
+```
+pip install glob
+```
+
+
 - [ ] Instale os módulos principal.py, excel.py,webscraping.py,financas.py
 - [ ] Coloque todos os módulos na mesma pasta de seu computador
 - [ ] Execute o módulo principal.py
