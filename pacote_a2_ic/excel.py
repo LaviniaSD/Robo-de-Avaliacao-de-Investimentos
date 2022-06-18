@@ -66,10 +66,16 @@ def planilha(dicio_moedas, dicio_acoes, moedas_cota, acoes_cota):   # Cria uma p
 def valor_total(moedas, acoes, moedas_cota, acoes_cota):
     soma=0
     for moeda, quant_moeda in moedas.items():
-        soma  += quant_moeda * moedas_cota[moeda]
+        try:
+            soma  += quant_moeda * moedas_cota[moeda]
+        except:
+            soma=soma
         
     for acao, quant_acao in acoes.items():
-        soma += quant_acao * acoes_cota[acao]
+        try:
+            soma += quant_acao * acoes_cota[acao]
+        except:
+            soma = soma
     return soma
 
 
