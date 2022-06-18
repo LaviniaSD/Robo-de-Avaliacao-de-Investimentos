@@ -89,6 +89,13 @@ pip install glob2
 pip install plotly
 ```
 
+- [ ] Instale a biblioteca kaleido do Python
+  
+```
+pip install kaleido
+```
+
+
 - [ ] Instale os módulos principal.py, excel.py,webscraping.py,financas.py
 - [ ] Coloque todos os módulos na mesma pasta de seu computador
 - [ ] Execute o módulo principal.py
