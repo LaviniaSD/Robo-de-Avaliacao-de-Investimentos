@@ -68,7 +68,9 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
     import yfinance as yf                         
     dicionario_preco_acoes_em_BRL = {}                   
     for chave in dicionario_acoes.keys():         
-        valor = yf.Ticker(chave).info.get('currentPrice')        
+        valor = yf.Ticker(chave).info.get('currentPrice')
+        if valor == None:
+            valor = yf.Ticker(chave).info.get('regularMarketPrice')        
         currency_da_acao = yf.Ticker(chave).info.get('currency')
         # print(currency_da_acao,valor)
         if currency_da_acao == "BRL":
