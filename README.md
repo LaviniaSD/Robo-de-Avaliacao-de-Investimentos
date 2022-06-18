@@ -83,6 +83,11 @@ pip install datetime
 pip install glob2
 ```
 
+- [ ] Instale a biblioteca plotly do Python
+  
+```
+pip install plotly
+```
 
 - [ ] Instale os módulos principal.py, excel.py,webscraping.py,financas.py
 - [ ] Coloque todos os módulos na mesma pasta de seu computador
