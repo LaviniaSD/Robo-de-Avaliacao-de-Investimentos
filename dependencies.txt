@@ -5,6 +5,7 @@ openpyxl
 pandas
 datetime
 os
+kaleido
 glob
 qrcode
 plotly
