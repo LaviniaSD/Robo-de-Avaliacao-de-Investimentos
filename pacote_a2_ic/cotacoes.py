@@ -108,7 +108,7 @@ def historico_moedas(dicionario_moedas):
                 print("Não é possível obter histórico de uma moeda em relação à ela mesma")             
             elif "BRL=X" or "BRX=X" in moeda:                                                    
                 
-                valor = yf.download(tickers=moeda, period = '5y', interval = '3mo', rounding= True) # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+                valor = yf.download(tickers=moeda, period = '5y', interval = '3mo', rounding= True) # Acessa o histórico dos últimos 5 anos de 3 em 3 meses da moeda atrelada ao Real
 
                 if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no yfinance
                     print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
@@ -116,7 +116,7 @@ def historico_moedas(dicionario_moedas):
                     dicionario_historico_cotacoes_moedas[moeda]= valor # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
             else:
                 moeda_comparada_BRL = f"{moeda}BRL=X"     # Adapta para o padrão que a yfinance reconhece para buscar o histórico atrelado ao Real.
-                valor = yf.download(tickers=moeda, period = '5y', interval = '3mo', rounding= True)# Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+                valor = yf.download(tickers=moeda, period = '5y', interval = '3mo', rounding= True)#Acessa o histórico dos últimos 5 anos de 3 em 3 meses da moeda atrelada ao Real
 
                 if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no yfinance
                     print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
@@ -131,7 +131,7 @@ def historico_acoes(dicionario_acoes):
     import yfinance as yf
     dicionario_historico_preco_acoes = {}
     for acao in dicionario_acoes.keys():
-        historico_acao = yf.download(tickers=acao, period = '5y', interval = '3mo', rounding= True) # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+        historico_acao = yf.download(tickers=acao, period = '5y', interval = '3mo', rounding= True) # Acessa o histórico dos últimos 5 anos de 3 em 3 meses da ação 
         if "Empty" in str(historico_acao):
             historico_acao = yf.Ticker(f"{acao}.SA").history(period = "5y", interval="3mo")
             if "Empty" in str(historico_acao):
