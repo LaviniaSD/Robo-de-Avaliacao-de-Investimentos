@@ -1,5 +1,5 @@
 <h1>Robô de avaliação de investimentos</h1>
-> Status: Em andamento...
+> Status: Concluído
 
 <h3>Índice:</h3>
 =================
