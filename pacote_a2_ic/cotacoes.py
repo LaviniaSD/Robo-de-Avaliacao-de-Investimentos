@@ -70,7 +70,7 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
     for chave in dicionario_acoes.keys():         
         valor = yf.Ticker(chave).info.get('currentPrice')        
         currency_da_acao = yf.Ticker(chave).info.get('currency')
-        
+        # print(currency_da_acao,valor)
         if currency_da_acao == "BRL":
             valor = round(valor,2)
             dicionario_preco_acoes_em_BRL[chave] = valor   
@@ -78,8 +78,7 @@ def pega_preco_acao_em_BRL(dicionario_acoes):
             if valor == None:                          
                 chave_corrigida = f"{chave}.SA"    
                 valor = yf.Ticker(chave_corrigida).info.get('currentPrice')
-                currency_da_acao = yf.Ticker(chave_corrigida).info.get('currency')
-
+                currency_da_acao = yf.Ticker(chave_corrigida).info.get('currency')  
                 if valor == None:
                     apoio1(currency_da_acao, chave, dicionario_preco_acoes_em_BRL)             
                 else:
@@ -107,9 +106,18 @@ def historico_moedas(dicionario_moedas):
     for moeda in dicionario_moedas.keys():                        
             if moeda == "BRL":                                    # Cria uma verificação se a moeda é o Real
                 print("Não é possível obter histórico de uma moeda em relação à ela mesma")             
-            else:                                                    
+            elif "BRL=X" or "BRX=X" in moeda:                                                    
+                
+                valor = yf.Ticker(moeda).history(period = "5y", interval="3mo") # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+                historico_cotacoes_moedas = valor[['Close']].copy()      #Cria um dataframe somente com as cotações passadas
+                historico_cotacoes_moedas = historico_cotacoes_moedas.rename(columns = {'Close':'Cotação'})  #Altera o nome da coluna 
+                if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no yfinance
+                    print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
+                else:
+                    dicionario_historico_cotacoes_moedas[moeda]= historico_cotacoes_moedas # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
+            else:
                 moeda_comparada_BRL = f"{moeda}BRL=X"     # Adapta para o padrão que a yfinance reconhece para buscar o histórico atrelado ao Real.
-                valor = yf.Ticker(moeda_comparada_BRL).history(period = "5y") # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+                valor = yf.Ticker(moeda_comparada_BRL).history(period = "5y", interval="3mo") # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
                 historico_cotacoes_moedas = valor[['Close']].copy()      #Cria um dataframe somente com as cotações passadas
                 historico_cotacoes_moedas = historico_cotacoes_moedas.rename(columns = {'Close':'Cotação'})  #Altera o nome da coluna 
 
@@ -126,9 +134,9 @@ def historico_acoes(dicionario_acoes):
     import yfinance as yf
     dicionario_historico_preco_acoes = {}
     for acao in dicionario_acoes.keys():
-        historico_acao = yf.Ticker(acao).history(period = "5y")
+        historico_acao = yf.Ticker(acao).history(period = "5y", interval="3mo")
         if "Empty" in str(historico_acao):
-            historico_acao = yf.Ticker(f"{acao}.SA").history(period = "5y")
+            historico_acao = yf.Ticker(f"{acao}.SA").history(period = "5y", interval="3mo")
             if "Empty" in str(historico_acao):
                 print("Ação não encontrada no yahoo Finance")
                 dicionario_historico_preco_acoes[acao] = "Ação não encontrada" 
@@ -149,7 +157,6 @@ def apoio1(currency_da_acao, chave, dicionario_preco_acoes_em_BRL): # Função c
     import yfinance as yf
     try:
         valor = yf.Ticker(chave).info.get('regularMarketPrice')
-        print(valor)
         valor = round(valor,2)
         if valor != None:
             dicionario_preco_acoes_em_BRL[chave] = valor
@@ -171,4 +178,5 @@ def apoio2(currency_da_acao, chave, dicionario_preco_acoes_em_BRL, valor): ## Co
     for cotacao_real in dict_cotacao_real.values():
         preco_acao_convertido_BRL = cotacao_real * valor
         dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
+
 
