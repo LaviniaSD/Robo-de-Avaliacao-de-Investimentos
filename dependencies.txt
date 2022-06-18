@@ -2,3 +2,8 @@ yfinance
 urllib3
 bs4
 openpyxl
+pandas
+datetime
+os
+glob
+qrcode
