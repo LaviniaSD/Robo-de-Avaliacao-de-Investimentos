@@ -1,0 +1,44 @@
+/*Atribui características a serem usadas em todas as partes do html */
+* {
+	font-family:Copperplate;
+	font-size:20px;
+	text-align:center;
+	background-color:lightgreen;
+	color: green;
+	margin-bottom:7px;
+
+	
+}
+
+/* Seleciona a distância do padding*/	
+body {
+	padding:50px;
+	}
+
+
+/* Ajusta o tamanho da fonte do cabeçalho, o coloca em negrito e escolhe a cor de fundo */
+h1 {
+	font-size:30px;
+    font-weight: bold;
+	background-color:white;
+}
+
+/*Ajusta as margens da tabela, sua borda e cor de fundo. */
+table {
+	margin-left: auto;
+	margin-right: auto;
+	border:5px solid white;
+	padding:10px;
+	background-color:#f0f6fc;
+}
+
+/*Ajusta o tamanho das imagens do html */
+img {
+	height:50px;
+	width:50px;
+}
+
+/* Seleciona a cor das linhas horizontais de quebra temática*/
+hr {
+	border-color:green;
+}
