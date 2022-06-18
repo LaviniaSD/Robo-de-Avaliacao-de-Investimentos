@@ -108,23 +108,20 @@ def historico_moedas(dicionario_moedas):
                 print("Não é possível obter histórico de uma moeda em relação à ela mesma")             
             elif "BRL=X" or "BRX=X" in moeda:                                                    
                 
-                valor = yf.Ticker(moeda).history(period = "5y", interval="3mo") # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
-                historico_cotacoes_moedas = valor[['Close']].copy()      #Cria um dataframe somente com as cotações passadas
-                historico_cotacoes_moedas = historico_cotacoes_moedas.rename(columns = {'Close':'Cotação'})  #Altera o nome da coluna 
-                if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no yfinance
-                    print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
-                else:
-                    dicionario_historico_cotacoes_moedas[moeda]= historico_cotacoes_moedas # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
-            else:
-                moeda_comparada_BRL = f"{moeda}BRL=X"     # Adapta para o padrão que a yfinance reconhece para buscar o histórico atrelado ao Real.
-                valor = yf.Ticker(moeda_comparada_BRL).history(period = "5y", interval="3mo") # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
-                historico_cotacoes_moedas = valor[['Close']].copy()      #Cria um dataframe somente com as cotações passadas
-                historico_cotacoes_moedas = historico_cotacoes_moedas.rename(columns = {'Close':'Cotação'})  #Altera o nome da coluna 
+                valor = yf.download(tickers=moeda, period = '5y', interval = '3mo', rounding= True) # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
 
                 if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no yfinance
                     print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
                 else:
-                    dicionario_historico_cotacoes_moedas[moeda]= historico_cotacoes_moedas # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
+                    dicionario_historico_cotacoes_moedas[moeda]= valor # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
+            else:
+                moeda_comparada_BRL = f"{moeda}BRL=X"     # Adapta para o padrão que a yfinance reconhece para buscar o histórico atrelado ao Real.
+                valor = yf.download(tickers=moeda, period = '5y', interval = '3mo', rounding= True)# Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
+
+                if 'Empty' in str(valor):       #Verifica se o par de moedas possui histórico no yfinance
+                    print(f"Não é possível pegar o histórico de {moeda} pareado ao Real(BRL) devido a inexistência no Yahoo Finance")
+                else:
+                    dicionario_historico_cotacoes_moedas[moeda]= valor # Insere no dicionario_historico_cotacoes_moedas o nome da moeda como chave e o histórico como valor.
 
     return dicionario_historico_cotacoes_moedas # Retorna o dicionario das ações e seus preços
 
@@ -134,21 +131,17 @@ def historico_acoes(dicionario_acoes):
     import yfinance as yf
     dicionario_historico_preco_acoes = {}
     for acao in dicionario_acoes.keys():
-        historico_acao = yf.Ticker(acao).history(period = "5y", interval="3mo")
+        historico_acao = yf.download(tickers=acao, period = '5y', interval = '3mo', rounding= True) # Acessa o histórico dos últimos 5 anos da moeda atrelada ao Real
         if "Empty" in str(historico_acao):
             historico_acao = yf.Ticker(f"{acao}.SA").history(period = "5y", interval="3mo")
             if "Empty" in str(historico_acao):
                 print("Ação não encontrada no yahoo Finance")
                 dicionario_historico_preco_acoes[acao] = "Ação não encontrada" 
             else:
-                historico_preco_acao = historico_acao[["Close"]].copy()
-                historico_preco_acao = historico_preco_acao.rename(columns = {"Close": "Preço"})
-                dicionario_historico_preco_acoes[acao] = historico_preco_acao
+                dicionario_historico_preco_acoes[acao] = historico_acao
         
         else:  
-            historico_preco_acao = historico_acao[["Close"]].copy()
-            historico_preco_acao = historico_preco_acao.rename(columns = {"Close": "Preço"})
-            dicionario_historico_preco_acoes[acao] = historico_preco_acao
+            dicionario_historico_preco_acoes[acao] = historico_acao
     return dicionario_historico_preco_acoes
 
 
@@ -178,5 +171,4 @@ def apoio2(currency_da_acao, chave, dicionario_preco_acoes_em_BRL, valor): ## Co
     for cotacao_real in dict_cotacao_real.values():
         preco_acao_convertido_BRL = cotacao_real * valor
         dicionario_preco_acoes_em_BRL[chave] = round(preco_acao_convertido_BRL, 2)
-
 
